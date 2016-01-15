@@ -15,13 +15,13 @@
   ~ limitations under the License
   -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
 
-    <!-- Mark message as read -->
-    <string name="notification_mark_as_read">Mark as read</string>
+    <!-- Preference keys for user-visible settings -->
+    <!-- Application-wide settings -->
+    <string name="swipe_right_deletes_conversation_key" translatable="false">swipe_right_deletes_conversation</string>
 
-    <!-- Swipe to delete conversation -->
-    <string name="swipe_to_delete_conversation_pref_title">Swipe to delete</string>
-    <string name="swipe_to_delete_conversation_pref_summary">Swipe to the right to delete a conversation</string>
+    <!-- This should really go into a config xml, but whoever wrote this app is an idiot, so follow their pattern -->
+    <bool name="swipe_right_deletes_conversation_default" translatable="false">false</bool>
 
 </resources>
