@@ -973,4 +973,8 @@
 
     <!-- The accessibility text read when the sim chooser pops up to read the current selected sim -->
     <string name="selected_sim_content_message"><xliff:g id="selected_sim">%s</xliff:g> selected</string>
+    
+    <!-- Show emoticons -->
+    <string name="show_emoticons_pref_title">Emoticons access</string>
+    <string name="show_emoticons_pref_summary">Show the emoticons key on the keyboard</string>
 </resources>
