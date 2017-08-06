@@ -38,7 +38,10 @@
          <item name="android:textColorHighlight">@color/text_highlight_color</item>
          <item name="actionBarStyle">@style/BugleActionBar</item>
          <item name="apnPreferenceStyle">@style/ApnPreference</item>
+         <item name="actionBarPopupTheme">@style/ActionBarPopupTheme</item>
     </style>
+
+    <style name="ActionBarPopupTheme" parent="@*android:style/ThemeOverlay.Material.Light" />
 
     <style name="BugleTheme.ConversationActivity"
         parent="@style/BugleTheme.ConversationActivityBase">
