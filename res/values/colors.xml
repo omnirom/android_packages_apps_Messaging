@@ -47,9 +47,9 @@
     <color name="message_info_text_incoming_download_failed">#6a6a6a</color>
     <color name="message_download_failed_timestamp_text">#007fce</color>
     <color name="message_failed_timestamp_text">#99ff0000</color>
-    <color name="message_action_status_text">#ffffffff</color>
-    <color name="message_action_info_text">#99ffffff</color>
-    <color name="message_action_timestamp_text">#ffffffff</color>
+    <color name="message_action_status_text">#000000</color>
+    <color name="message_action_info_text">#99000000</color>
+    <color name="message_action_timestamp_text">#ff000000</color>
 
     <color name="background_item_transparent">@android:color/transparent</color>
     <color name="background_item_activated">#670099cc</color>
@@ -57,7 +57,7 @@
     <color name="background_item_pressed">#6733b5e5</color>
 
     <color name="subject_editor_bubble">#ffffffff</color>
-    <color name="message_text_color_incoming">#ffffffff</color>
+    <color name="message_text_color_incoming">#ff000000</color>
     <color name="message_text_color_incoming_download_failed">#6a6a6a</color>
     <color name="message_text_color_outgoing">#ff323232</color>
     <color name="conversation_background">#eeeeee</color>
