@@ -31,7 +31,7 @@ import android.preference.RingtonePreference;
 import android.preference.SwitchPreference;
 import android.preference.TwoStatePreference;
 import android.provider.Settings;
-import android.support.v4.app.NavUtils;
+import androidx.core.app.NavUtils;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
