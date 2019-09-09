@@ -69,7 +69,6 @@ LOCAL_PACKAGE_NAME := messaging
 LOCAL_CERTIFICATE := shared
 
 LOCAL_SDK_VERSION := current
-LOCAL_MIN_SDK_VERSION := 21
 
 include $(BUILD_PACKAGE)
 
