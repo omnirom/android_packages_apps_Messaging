@@ -15,10 +15,12 @@
     limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
     package="com.android.messaging"
     android:installLocation="internalOnly">
 
-    <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="28" />
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28"
+              tools:overrideLibrary="com.android.ex.chips,com.android.ex.photo" />
 
     <!-- Application holds CPU wakelock while working in background -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
