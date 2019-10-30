@@ -27,4 +27,6 @@
     <string name="value_yes">Yes</string>
     <string name="value_no">No</string>
 
+    <!-- Notification channel -->
+    <string name="notification_channel_messages_title">Messages</string>
 </resources>
