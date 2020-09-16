@@ -71,6 +71,12 @@ LOCAL_CERTIFICATE := shared
 LOCAL_SDK_VERSION := current
 LOCAL_MIN_SDK_VERSION := 21
 
+LOCAL_PRODUCT_MODULE := true
+
+LOCAL_MODULE_PATH := $(TARGET_OUT_PRODUCT_APPS)
+
+LOCAL_COMPATIBILITY_SUITE := general-tests
+
 include $(BUILD_PACKAGE)
 
 include $(call all-makefiles-under, $(LOCAL_PATH))
