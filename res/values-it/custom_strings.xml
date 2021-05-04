@@ -19,5 +19,5 @@
     <string name="notification_mark_as_read">Segna come letto</string>
     <!-- Swipe to delete conversation -->
     <string name="swipe_to_delete_conversation_pref_title">Scorri per eliminare</string>
-    <string name="swipe_to_delete_conversation_pref_summary">Scorri verso destra per eliminare una conversazione</string>
+    <string name="swipe_to_delete_conversation_pref_summary">Scorri a destra per eliminare una conversazione</string>
 </resources>
