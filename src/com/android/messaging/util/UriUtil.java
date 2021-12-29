@@ -94,8 +94,12 @@ public class UriUtil {
         return TextUtils.equals(scheme, ContentResolver.SCHEME_ANDROID_RESOURCE);
     }
 
+    /** Returns whether the given Uri is a file. */
     public static boolean isFileUri(final Uri uri) {
-        return uri != null && TextUtils.equals(uri.getScheme(), ContentResolver.SCHEME_FILE);
+        return uri != null &&
+                uri.getScheme() != null &&
+                TextUtils.equals(uri.getScheme().toLowerCase(),
+                        ContentResolver.SCHEME_FILE);
     }
 
     /**
@@ -324,14 +328,13 @@ public class UriUtil {
     }
 
     /**
-     * Extract recipient destinations from Uri of form
-     *     SCHEME:destionation[,destination]?otherstuff
+     * Extract recipient destinations from Uri of form SCHEME:destination[,destination]?otherstuff
      * where SCHEME is one of the supported sms/mms schemes.
      *
      * @param uri sms/mms uri
-     * @return recipient destinations or null
+     * @return a comma-separated list of recipient destinations or null.
      */
-    public static String[] parseRecipientsFromSmsMmsUri(final Uri uri) {
+    public static String parseRecipientsFromSmsMmsUri(final Uri uri) {
         if (!isSmsMmsUri(uri)) {
             return null;
         }
@@ -341,7 +344,7 @@ public class UriUtil {
         }
         // replaceUnicodeDigits will replace digits typed in other languages (i.e. Egyptian) with
         // the usual ascii equivalents.
-        return TextUtil.replaceUnicodeDigits(parts[0]).replace(';', ',').split(",");
+        return TextUtil.replaceUnicodeDigits(parts[0]).replace(';', ',');
     }
 
     /**
