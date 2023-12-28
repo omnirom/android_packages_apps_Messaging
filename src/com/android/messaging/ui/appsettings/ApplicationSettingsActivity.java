@@ -17,6 +17,7 @@
 package com.android.messaging.ui.appsettings;
 
 import android.app.FragmentTransaction;
+import android.app.role.RoleManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -83,11 +84,8 @@ public class ApplicationSettingsActivity extends BugleActionBarActivity {
 
         private String mNotificationsPreferenceKey;
         private Preference mNotificationsPreference;
-        private String mSmsDisabledPrefKey;
-        private Preference mSmsDisabledPreference;
         private String mSmsEnabledPrefKey;
         private Preference mSmsEnabledPreference;
-        private boolean mIsSmsPreferenceClicked;
         private String mSwipeRightToDeleteConversationkey;
         private SwitchPreference mSwipeRightToDeleteConversationPreference;
 
@@ -105,15 +103,12 @@ public class ApplicationSettingsActivity extends BugleActionBarActivity {
             mNotificationsPreferenceKey =
                     getString(R.string.notifications_pref_key);
             mNotificationsPreference = findPreference(mNotificationsPreferenceKey);
-            mSmsDisabledPrefKey = getString(R.string.sms_disabled_pref_key);
-            mSmsDisabledPreference = findPreference(mSmsDisabledPrefKey);
             mSmsEnabledPrefKey = getString(R.string.sms_enabled_pref_key);
             mSmsEnabledPreference = findPreference(mSmsEnabledPrefKey);
             mSwipeRightToDeleteConversationkey = getString(
                     R.string.swipe_right_deletes_conversation_key);
             mSwipeRightToDeleteConversationPreference =
                     (SwitchPreference) findPreference(mSwipeRightToDeleteConversationkey);
-            mIsSmsPreferenceClicked = false;
 
             if (!DebugUtils.isDebugEnabled()) {
                 final Preference debugCategory = findPreference(getString(
@@ -142,46 +137,25 @@ public class ApplicationSettingsActivity extends BugleActionBarActivity {
                 Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
                 intent.putExtra(Settings.EXTRA_APP_PACKAGE, getContext().getPackageName());
                 startActivity(intent);
-            }
-            if (preference.getKey() ==  mSmsDisabledPrefKey ||
-                    preference.getKey() == mSmsEnabledPrefKey) {
-                mIsSmsPreferenceClicked = true;
+                return true;
+            } if (preference.getKey() == mSmsEnabledPrefKey) {
+                Intent intent = new Intent("android.intent.action.MANAGE_DEFAULT_APP");
+                intent.putExtra("android.intent.extra.ROLE_NAME", RoleManager.ROLE_SMS);
+                startActivity(intent);
+                return true;
             }
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
 
         private void updateSmsEnabledPreferences() {
             if (!OsUtil.isAtLeastKLP()) {
-                getPreferenceScreen().removePreference(mSmsDisabledPreference);
                 getPreferenceScreen().removePreference(mSmsEnabledPreference);
             } else {
                 final String defaultSmsAppLabel = getString(R.string.default_sms_app,
                         PhoneUtils.getDefault().getDefaultSmsAppLabel());
-                boolean isSmsEnabledBeforeState;
-                boolean isSmsEnabledCurrentState;
-                if (PhoneUtils.getDefault().isDefaultSmsApp()) {
-                    if (getPreferenceScreen().findPreference(mSmsEnabledPrefKey) == null) {
-                        getPreferenceScreen().addPreference(mSmsEnabledPreference);
-                        isSmsEnabledBeforeState = false;
-                    } else {
-                        isSmsEnabledBeforeState = true;
-                    }
-                    isSmsEnabledCurrentState = true;
-                    getPreferenceScreen().removePreference(mSmsDisabledPreference);
-                    mSmsEnabledPreference.setSummary(defaultSmsAppLabel);
-                } else {
-                    if (getPreferenceScreen().findPreference(mSmsDisabledPrefKey) == null) {
-                        getPreferenceScreen().addPreference(mSmsDisabledPreference);
-                        isSmsEnabledBeforeState = true;
-                    } else {
-                        isSmsEnabledBeforeState = false;
-                    }
-                    isSmsEnabledCurrentState = false;
-                    getPreferenceScreen().removePreference(mSmsEnabledPreference);
-                    mSmsDisabledPreference.setSummary(defaultSmsAppLabel);
-                }
+                boolean isSmsEnabledCurrentState = PhoneUtils.getDefault().isDefaultSmsApp();
+                mSmsEnabledPreference.setSummary(isSmsEnabledCurrentState ? getString(R.string.value_yes) : getString(R.string.value_no));
             }
-            mIsSmsPreferenceClicked = false;
         }
 
         @Override
