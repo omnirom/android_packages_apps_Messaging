@@ -30,10 +30,10 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.os.UserManager;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceGroup;
-import android.preference.PreferenceScreen;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragment;
+import androidx.preference.PreferenceGroup;
+import androidx.preference.PreferenceScreen;
 import android.provider.Telephony;
 import androidx.core.app.NavUtils;
 import android.view.Menu;
@@ -162,9 +162,7 @@ public class ApnSettingsActivity extends BugleActionBarActivity {
         }
 
         @Override
-        public void onActivityCreated(Bundle savedInstanceState) {
-            super.onActivityCreated(savedInstanceState);
-
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             final ListView lv = (ListView) getView().findViewById(android.R.id.list);
             TextView empty = (TextView) getView().findViewById(android.R.id.empty);
             if (empty != null) {
@@ -303,8 +301,7 @@ public class ApnSettingsActivity extends BugleActionBarActivity {
         }
 
         @Override
-        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
-                Preference preference) {
+        public boolean onPreferenceTreeClick(Preference preference) {
             startActivity(
                     UIIntents.get().getApnEditorIntent(getActivity(), preference.getKey(), mSubId));
             return true;

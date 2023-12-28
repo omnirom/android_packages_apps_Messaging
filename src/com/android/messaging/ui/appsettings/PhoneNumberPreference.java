@@ -17,14 +17,20 @@
 package com.android.messaging.ui.appsettings;
 
 import android.content.Context;
-import android.preference.EditTextPreference;
-import androidx.core.text.BidiFormatter;
-import androidx.core.text.TextDirectionHeuristicsCompat;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
+import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+import androidx.preference.EditTextPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceViewHolder;
+import androidx.core.text.BidiFormatter;
+import androidx.core.text.TextDirectionHeuristicsCompat;
 
 import com.android.messaging.R;
 import com.android.messaging.util.PhoneUtils;
@@ -39,12 +45,27 @@ import com.android.messaging.util.PhoneUtils;
  */
 public class PhoneNumberPreference extends EditTextPreference {
 
-    private String mDefaultPhoneNumber;
+    private String mDefaultPhoneNumber = "";
     private int mSubId;
 
-    public PhoneNumberPreference(final Context context, final AttributeSet attrs) {
+    public PhoneNumberPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init();
+    }
+
+    public PhoneNumberPreference(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    public PhoneNumberPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mDefaultPhoneNumber = "";
+        init();
+    }
+
+    public PhoneNumberPreference(Context context) {
+        super(context);
+        init();
     }
 
     public void setDefaultPhoneNumber(final String phoneNumber, final int subscriptionId) {
@@ -52,13 +73,19 @@ public class PhoneNumberPreference extends EditTextPreference {
         mSubId = subscriptionId;
     }
 
-    @Override
-    protected void onBindView(final View view) {
-        // Show the preference value if it's set, or the default number if not.
-        // If we don't have a default, fall back to a static string (e.g. Unknown).
+    private void init() {
+        setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+            @Override
+            public void onBindEditText(@NonNull EditText editText) {
+                editText.setText(getSummary());
+                editText.setInputType(InputType.TYPE_CLASS_PHONE);
+            }
+        });
+    }
+    public void updateSummary() {
         String value = getText();
         if (TextUtils.isEmpty(value)) {
-          value = mDefaultPhoneNumber;
+            value = mDefaultPhoneNumber;
         }
         final String displayValue = (!TextUtils.isEmpty(value))
                 ? PhoneUtils.get(mSubId).formatForDisplay(value)
@@ -66,52 +93,24 @@ public class PhoneNumberPreference extends EditTextPreference {
         final BidiFormatter bidiFormatter = BidiFormatter.getInstance();
         final String phoneNumber = bidiFormatter.unicodeWrap
                         (displayValue, TextDirectionHeuristicsCompat.LTR);
-        // Set the value as the summary and let the superclass populate the views
         setSummary(phoneNumber);
-        super.onBindView(view);
     }
 
     @Override
-    protected void onBindDialogView(final View view) {
-        super.onBindDialogView(view);
-
-        final String value = getText();
-
-        // If the preference is empty, populate the EditText with the default number instead.
-        if (TextUtils.isEmpty(value) && !TextUtils.isEmpty(mDefaultPhoneNumber)) {
-            final BidiFormatter bidiFormatter = BidiFormatter.getInstance();
-            final String phoneNumber = bidiFormatter.unicodeWrap
-                (PhoneUtils.get(mSubId).getCanonicalBySystemLocale(mDefaultPhoneNumber),
-                            TextDirectionHeuristicsCompat.LTR);
-            getEditText().setText(phoneNumber);
-        }
-        getEditText().setInputType(InputType.TYPE_CLASS_PHONE);
-    }
-
-    @Override
-    protected void onDialogClosed(final boolean positiveResult) {
-        if (positiveResult && mDefaultPhoneNumber != null) {
-            final String value = getEditText().getText().toString();
+    public void setText(final String text) {
+        String textValue = text;
+        if (mDefaultPhoneNumber != null) {
             final PhoneUtils phoneUtils = PhoneUtils.get(mSubId);
-            final String phoneNumber = phoneUtils.getCanonicalBySystemLocale(value);
+            final String phoneNumber = phoneUtils.getCanonicalBySystemLocale(textValue);
             final String defaultPhoneNumber = phoneUtils.getCanonicalBySystemLocale(
                     mDefaultPhoneNumber);
 
             // If the new value is the default, clear the preference.
             if (phoneNumber.equals(defaultPhoneNumber)) {
-                setText("");
-                return;
+                textValue = "";
             }
         }
-        super.onDialogClosed(positiveResult);
-    }
-
-    @Override
-    public void setText(final String text) {
-        super.setText(text);
-
-        // EditTextPreference doesn't show the value on the preference view, but we do.
-        // We thus need to force a rebind of the view when a new value is set.
-        notifyChanged();
+        super.setText(textValue);
+        updateSummary();
     }
 }

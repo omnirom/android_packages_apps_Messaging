@@ -23,16 +23,21 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceCategory;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.mms.MmsManager;
 import androidx.core.app.NavUtils;
+import androidx.preference.EditTextPreference;
+import androidx.preference.Preference;
+import androidx.preference.Preference.OnPreferenceClickListener;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
 
 import com.android.messaging.Factory;
 import com.android.messaging.R;
@@ -61,11 +66,8 @@ public class PerSubscriptionSettingsActivity extends BugleActionBarActivity {
         } else {
             // This will fall back to the default title, i.e. "Messaging settings," so No-op.
         }
-
-        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-        final PerSubscriptionSettingsFragment fragment = new PerSubscriptionSettingsFragment();
-        ft.replace(android.R.id.content, fragment);
-        ft.commit();
+        getWindow().getDecorView().setBackgroundColor(getColor(R.color.contextual_action_bar_background_color));
+        getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new PerSubscriptionSettingsFragment()).commit();
     }
 
     @Override
@@ -78,7 +80,7 @@ public class PerSubscriptionSettingsActivity extends BugleActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class PerSubscriptionSettingsFragment extends PreferenceFragment
+    public static class PerSubscriptionSettingsFragment extends PreferenceFragmentCompat
             implements OnSharedPreferenceChangeListener {
         private PhoneNumberPreference mPhoneNumberPreference;
         private Preference mGroupMmsPreference;
@@ -91,8 +93,7 @@ public class PerSubscriptionSettingsActivity extends BugleActionBarActivity {
         }
 
         @Override
-        public void onCreate(final Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
             // Get sub id from launch intent
             final Intent intent = getActivity().getIntent();
@@ -113,6 +114,7 @@ public class PerSubscriptionSettingsActivity extends BugleActionBarActivity {
 
             mPhoneNumberPreference.setDefaultPhoneNumber(
                     PhoneUtils.get(mSubId).getCanonicalForSelf(false/*allowOverride*/), mSubId);
+            mPhoneNumberPreference.updateSummary();
 
             mGroupMmsPrefKey = getString(R.string.group_mms_pref_key);
             mGroupMmsPreference = findPreference(mGroupMmsPrefKey);

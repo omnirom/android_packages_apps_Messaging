@@ -63,12 +63,11 @@ android_app {
         "androidx.core_core",
         "androidx.fragment_fragment",
         "androidx.media_media",
-        "androidx.legacy_legacy-support-core-utils",
-        "androidx.legacy_legacy-support-core-ui",
         "androidx.palette_palette",
         "androidx.recyclerview_recyclerview",
         "androidx.viewpager_viewpager",
         "androidx.legacy_legacy-support-v13",
+        "androidx.preference_preference",
         "colorpicker",
         "libchips",
         "libphotoviewer",
@@ -78,6 +77,7 @@ android_app {
         "com.android.vcard",
         "guava",
         "libphonenumber",
+        "OmniPreferenceTheme"
     ],
 
     aaptflags: [
