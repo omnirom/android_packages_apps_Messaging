@@ -21,10 +21,10 @@ import android.app.role.RoleManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
-import android.preference.SwitchPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceScreen;
+import androidx.preference.SwitchPreference;
 import android.provider.Settings;
 import androidx.core.app.NavUtils;
 import android.text.TextUtils;
@@ -51,10 +51,8 @@ public class ApplicationSettingsActivity extends BugleActionBarActivity {
         if (topLevel) {
             getSupportActionBar().setTitle(getString(R.string.settings_activity_title));
         }
-
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(android.R.id.content, new ApplicationSettingsFragment());
-        ft.commit();
+        getWindow().getDecorView().setBackgroundColor(getColor(R.color.contextual_action_bar_background_color));
+        getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new ApplicationSettingsFragment()).commit();
     }
 
     @Override
@@ -80,7 +78,7 @@ public class ApplicationSettingsActivity extends BugleActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class ApplicationSettingsFragment extends PreferenceFragment {
+    public static class ApplicationSettingsFragment extends PreferenceFragmentCompat {
 
         private String mNotificationsPreferenceKey;
         private Preference mNotificationsPreference;
@@ -94,8 +92,7 @@ public class ApplicationSettingsActivity extends BugleActionBarActivity {
         }
 
         @Override
-        public void onCreate(final Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
             getPreferenceManager().setSharedPreferencesName(BuglePrefs.SHARED_PREFERENCES_NAME);
             addPreferencesFromResource(R.xml.preferences_application);
@@ -131,8 +128,7 @@ public class ApplicationSettingsActivity extends BugleActionBarActivity {
         }
 
         @Override
-        public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen,
-                Preference preference) {
+        public boolean onPreferenceTreeClick(Preference preference) {
             if (preference.getKey() == mNotificationsPreferenceKey) {
                 Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
                 intent.putExtra(Settings.EXTRA_APP_PACKAGE, getContext().getPackageName());
@@ -144,7 +140,7 @@ public class ApplicationSettingsActivity extends BugleActionBarActivity {
                 startActivity(intent);
                 return true;
             }
-            return super.onPreferenceTreeClick(preferenceScreen, preference);
+            return super.onPreferenceTreeClick(preference);
         }
 
         private void updateSmsEnabledPreferences() {

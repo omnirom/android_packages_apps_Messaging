@@ -57,6 +57,7 @@ public class SettingsActivity extends BugleActionBarActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getWindow().getDecorView().setBackgroundColor(getColor(R.color.contextual_action_bar_background_color));
 
         // Directly open the detailed settings page as the top-level settings activity if this is
         // not a multi-SIM device.

@@ -25,9 +25,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
+import androidx.preference.EditTextPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragment;
 import android.provider.Telephony;
 import androidx.core.app.NavUtils;
 import android.view.KeyEvent;
@@ -175,9 +175,7 @@ public class ApnEditorActivity extends BugleActionBarActivity {
         }
 
         @Override
-        public void onActivityCreated(Bundle savedInstanceState) {
-            super.onActivityCreated(savedInstanceState);
-
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.apn_editor);
 
             setHasOptionsMenu(true);
