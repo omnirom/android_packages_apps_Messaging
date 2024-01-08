@@ -25,20 +25,18 @@
     <SwitchPreference
         android:key="@string/send_sound_pref_key"
         android:title="@string/send_sound_pref_title"
-        android:defaultValue="@bool/send_sound_pref_default"
-        android:persistent="true" />
+        android:defaultValue="@bool/send_sound_pref_default" />
 
     <Preference
         android:key="@string/notifications_pref_key"
         android:title="@string/notifications_pref_title"
-        android:persistent="true" />
+        android:persistent="false" />
 
     <SwitchPreference
         android:key="@string/swipe_right_deletes_conversation_key"
         android:title="@string/swipe_to_delete_conversation_pref_title"
         android:summary="@string/swipe_to_delete_conversation_pref_summary"
-        android:defaultValue="false"
-        android:persistent="true" />
+        android:defaultValue="false" />
 
     <PreferenceScreen
             android:key="@string/advanced_pref_key"
